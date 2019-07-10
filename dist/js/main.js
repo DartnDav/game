@@ -7,7 +7,7 @@ var game = (function() {
     y: 475,
     h: 25,
     w: 25,
-    fill: "#fff",
+    fill: "#ff0",
     dir: "right",
     speed: 5
   };
@@ -17,7 +17,7 @@ var game = (function() {
     y: 0,
     h: 10,
     w: 10,
-    fill: "#ff0",
+    fill: "",
     speed: 5
   };
 
@@ -30,6 +30,8 @@ var game = (function() {
   var gameOver = false;
 
   var score = 0;
+
+  var fill = "#" + Math.floor(Math.random() * 16777215).toString(16);
 
   function launchSpawns() {
     spawner = setInterval(() => {
@@ -147,11 +149,21 @@ var game = (function() {
   }
 
   return {
-    changeDirection: function() {
+    /*Set a random color
+    randColor: function() {
+      return "#" + Math.floor(Math.random() * 16777215).toString(16);
+    }, */
+
+    // Separate funtions for left and right arrow keys
+    leftDirection: function() {
+      if (player.dir === "right") {
+        player.dir = "left";
+      }
+    },
+
+    rightDirection: function() {
       if (player.dir === "left") {
         player.dir = "right";
-      } else if (player.dir === "right") {
-        player.dir = "left";
       }
     },
 
@@ -167,6 +179,15 @@ var game = (function() {
 
 game.init();
 
-window.addEventListener("keyup", function() {
-  game.changeDirection();
+// Changed changeDirection to keydown and separated for left and right arrow keys
+window.addEventListener("keydown", function(e) {
+  if (37 === e.keyCode) {
+    game.leftDirection();
+  }
+
+  window.addEventListener("keydown", function(e) {
+    if (39 === e.keyCode) {
+      game.rightDirection();
+    }
+  });
 });
